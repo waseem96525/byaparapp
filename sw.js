@@ -1,45 +1,12 @@
 // Service Worker for Offline Support
 // NOTE: Bump CACHE_NAME whenever assets change to avoid stale JS being served.
-const CACHE_NAME = 'bizbiller-v2';
-const urlsToCache = [
-  './index.html',
-  './styles.css',
-  './js/db.js',
-  './js/auth.js',
-  './js/utils.js',
-  './js/router.js',
-  './js/components.js',
-  './js/parties.js',
-  './js/items.js',
-  './js/billing.js',
-  './js/reports.js',
-  './js/accounting.js',
-  './js/settings.js',
-  './js/print.js',
-  './js/app.js',
-  './manifest.json'
-];
+const CACHE_NAME = 'bizbiller-v3';
 
 // Install Service Worker
 self.addEventListener('install', event => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-
-    // cache.addAll() fails the entire install if any single request fails.
-    // Use per-URL caching so missing/redirecting assets don't break installation.
-    await Promise.allSettled(
-      urlsToCache.map(async (url) => {
-        try {
-          await cache.add(new Request(url, { cache: 'reload' }));
-        } catch (err) {
-          // Keep SW install healthy even if one file isn't available.
-          console.warn('[SW] Precache failed:', url, err);
-        }
-      })
-    );
-
-    await self.skipWaiting();
-  })());
+  // Avoid install-time precache (it is brittle across hosts and can spam errors).
+  // We do runtime caching on successful fetches instead.
+  event.waitUntil(self.skipWaiting());
 });
 
 // Fetch from cache, fallback to network
@@ -51,7 +18,20 @@ self.addEventListener('fetch', event => {
 
   if (isNavigation) {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match('./index.html'))
+      fetch(event.request)
+        .then(response => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put('./index.html', responseClone));
+          return response;
+        })
+        .catch(async () => {
+          const cached = await caches.match('./index.html');
+          if (cached) return cached;
+          return new Response(
+            '<!doctype html><meta charset="utf-8"><title>Offline</title><h2>Offline</h2><p>Please reconnect and reload.</p>',
+            { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+          );
+        })
     );
     return;
   }
