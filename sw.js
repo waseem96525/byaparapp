@@ -2,7 +2,6 @@
 // NOTE: Bump CACHE_NAME whenever assets change to avoid stale JS being served.
 const CACHE_NAME = 'bizbiller-v2';
 const urlsToCache = [
-  './',
   './index.html',
   './styles.css',
   './js/db.js',
@@ -17,16 +16,30 @@ const urlsToCache = [
   './js/accounting.js',
   './js/settings.js',
   './js/print.js',
-  './js/app.js'
+  './js/app.js',
+  './manifest.json'
 ];
 
 // Install Service Worker
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+
+    // cache.addAll() fails the entire install if any single request fails.
+    // Use per-URL caching so missing/redirecting assets don't break installation.
+    await Promise.allSettled(
+      urlsToCache.map(async (url) => {
+        try {
+          await cache.add(new Request(url, { cache: 'reload' }));
+        } catch (err) {
+          // Keep SW install healthy even if one file isn't available.
+          console.warn('[SW] Precache failed:', url, err);
+        }
+      })
+    );
+
+    await self.skipWaiting();
+  })());
 });
 
 // Fetch from cache, fallback to network
