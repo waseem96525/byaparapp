@@ -44,12 +44,29 @@
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
+            // Use absolute path so it works consistently on deployments (e.g., Vercel).
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
                 .then(reg => {
                     console.log('Service Worker registered');
                     reg.update();
                 })
-                .catch(err => console.log('Service Worker registration failed'));
+                .catch(async (err) => {
+                    console.warn('Service Worker registration failed:', err);
+
+                    // If a previous SW was registered but the script is now missing (404),
+                    // unregister + clear caches to avoid repeated "Failed to update" errors.
+                    try {
+                        const regs = await navigator.serviceWorker.getRegistrations();
+                        await Promise.all(regs.map(r => r.unregister()));
+
+                        if (window.caches && caches.keys) {
+                            const keys = await caches.keys();
+                            await Promise.all(keys.map(k => caches.delete(k)));
+                        }
+                    } catch (cleanupErr) {
+                        console.warn('Service Worker cleanup failed:', cleanupErr);
+                    }
+                });
         }
     </script>
 </body>
