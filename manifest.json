@@ -1,0 +1,11 @@
+{
+  "name": "BizBiller - Business Accounting",
+  "short_name": "BizBiller",
+  "description": "Complete Business Billing & Accounting Software",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4A90E2",
+  "orientation": "portrait",
+  "icons": []
+}

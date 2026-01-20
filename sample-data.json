@@ -1,0 +1,371 @@
+{
+  "note": "This is a sample backup file showing the data structure. You can restore this for testing.",
+  "version": 1,
+  "timestamp": "2026-01-20T10:00:00.000Z",
+  "business": [
+    {
+      "id": 1,
+      "name": "Demo Store",
+      "address": "123 Main Street, Mumbai, Maharashtra 400001",
+      "phone": "9876543210",
+      "email": "demo@example.com",
+      "gstin": "27AABCU9603R1ZX",
+      "logo": null,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "username": "admin",
+      "pin": "1234",
+      "role": "admin",
+      "name": "Admin User",
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "General",
+      "type": "item",
+      "businessId": 1
+    },
+    {
+      "id": 2,
+      "name": "Electronics",
+      "type": "item",
+      "businessId": 1
+    },
+    {
+      "id": 3,
+      "name": "Clothing",
+      "type": "item",
+      "businessId": 1
+    },
+    {
+      "id": 4,
+      "name": "Office Expenses",
+      "type": "expense",
+      "businessId": 1
+    },
+    {
+      "id": 5,
+      "name": "Rent",
+      "type": "expense",
+      "businessId": 1
+    }
+  ],
+  "parties": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "type": "customer",
+      "name": "Rajesh Kumar",
+      "phone": "9876543210",
+      "email": "rajesh@example.com",
+      "address": "456 Park Road, Mumbai",
+      "gstin": "",
+      "openingBalance": 0,
+      "currentBalance": 5000,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "businessId": 1,
+      "type": "customer",
+      "name": "Priya Sharma",
+      "phone": "9876543211",
+      "email": "priya@example.com",
+      "address": "789 MG Road, Pune",
+      "gstin": "",
+      "openingBalance": 0,
+      "currentBalance": 0,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "businessId": 1,
+      "type": "supplier",
+      "name": "ABC Wholesalers",
+      "phone": "9876543212",
+      "email": "abc@example.com",
+      "address": "321 Industrial Area, Delhi",
+      "gstin": "07AABCU9603R1ZY",
+      "openingBalance": 0,
+      "currentBalance": 15000,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "name": "Wireless Mouse",
+      "categoryId": 2,
+      "unit": "pcs",
+      "salePrice": 500,
+      "purchasePrice": 350,
+      "gstRate": 18,
+      "hsn": "8471",
+      "barcode": "BR1705829600001",
+      "description": "Wireless optical mouse with USB receiver",
+      "currentStock": 50,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "businessId": 1,
+      "name": "USB Cable Type-C",
+      "categoryId": 2,
+      "unit": "pcs",
+      "salePrice": 150,
+      "purchasePrice": 80,
+      "gstRate": 18,
+      "hsn": "8544",
+      "barcode": "BR1705829600002",
+      "description": "1 meter USB Type-C cable",
+      "currentStock": 100,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "businessId": 1,
+      "name": "Cotton T-Shirt",
+      "categoryId": 3,
+      "unit": "pcs",
+      "salePrice": 299,
+      "purchasePrice": 150,
+      "gstRate": 5,
+      "hsn": "6109",
+      "barcode": "BR1705829600003",
+      "description": "100% cotton round neck t-shirt",
+      "currentStock": 75,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "businessId": 1,
+      "name": "Notebook A4",
+      "categoryId": 1,
+      "unit": "pcs",
+      "salePrice": 80,
+      "purchasePrice": 45,
+      "gstRate": 12,
+      "hsn": "4820",
+      "barcode": "BR1705829600004",
+      "description": "200 pages ruled notebook",
+      "currentStock": 200,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "businessId": 1,
+      "name": "Ballpoint Pen",
+      "categoryId": 1,
+      "unit": "pcs",
+      "salePrice": 10,
+      "purchasePrice": 5,
+      "gstRate": 12,
+      "hsn": "9608",
+      "barcode": "BR1705829600005",
+      "description": "Blue ink ballpoint pen",
+      "currentStock": 500,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "type": "sale",
+      "invoiceNo": "INV00001",
+      "date": "2026-01-20",
+      "partyId": 1,
+      "partyName": "Rajesh Kumar",
+      "isGST": true,
+      "items": [
+        {
+          "id": "temp1",
+          "itemId": 1,
+          "name": "Wireless Mouse",
+          "quantity": 2,
+          "rate": 500,
+          "unit": "pcs",
+          "gstRate": 18
+        },
+        {
+          "id": "temp2",
+          "itemId": 2,
+          "name": "USB Cable Type-C",
+          "quantity": 3,
+          "rate": 150,
+          "unit": "pcs",
+          "gstRate": 18
+        }
+      ],
+      "subtotal": 1450,
+      "discount": 0,
+      "discountPercent": 0,
+      "discountAmount": 0,
+      "taxableAmount": 1450,
+      "totalTax": 261,
+      "total": 1711,
+      "roundOff": 0,
+      "grandTotal": 1711,
+      "paid": 0,
+      "due": 1711,
+      "status": "unpaid",
+      "paymentMode": "cash",
+      "notes": "",
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "businessId": 1,
+      "type": "sale",
+      "invoiceNo": "INV00002",
+      "date": "2026-01-20",
+      "partyId": 2,
+      "partyName": "Priya Sharma",
+      "isGST": true,
+      "items": [
+        {
+          "id": "temp3",
+          "itemId": 3,
+          "name": "Cotton T-Shirt",
+          "quantity": 5,
+          "rate": 299,
+          "unit": "pcs",
+          "gstRate": 5
+        }
+      ],
+      "subtotal": 1495,
+      "discount": 0,
+      "discountPercent": 0,
+      "discountAmount": 0,
+      "taxableAmount": 1495,
+      "totalTax": 74.75,
+      "total": 1569.75,
+      "roundOff": 0.25,
+      "grandTotal": 1570,
+      "paid": 1570,
+      "due": 0,
+      "status": "paid",
+      "paymentMode": "upi",
+      "notes": "",
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "type": "payment_in",
+      "partyId": 2,
+      "invoiceId": 2,
+      "amount": 1570,
+      "mode": "upi",
+      "reference": "",
+      "date": "2026-01-20",
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "expenses": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "category": "Office Expenses",
+      "amount": 5000,
+      "date": "2026-01-15",
+      "description": "Monthly office supplies",
+      "accountId": null,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "businessId": 1,
+      "category": "Rent",
+      "amount": 25000,
+      "date": "2026-01-01",
+      "description": "January rent",
+      "accountId": null,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "bankAccounts": [
+    {
+      "id": 1,
+      "businessId": 1,
+      "name": "Cash in Hand",
+      "type": "cash",
+      "balance": 50000,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "businessId": 1,
+      "name": "HDFC Bank - Current",
+      "type": "bank",
+      "accountNumber": "1234567890",
+      "ifsc": "HDFC0001234",
+      "balance": 125000,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    }
+  ],
+  "settings": [
+    {
+      "key": "invoicePrefix",
+      "value": "INV"
+    },
+    {
+      "key": "lastInvoiceNo",
+      "value": 2
+    },
+    {
+      "key": "estimatePrefix",
+      "value": "EST"
+    },
+    {
+      "key": "lastEstimateNo",
+      "value": 0
+    },
+    {
+      "key": "challanPrefix",
+      "value": "DC"
+    },
+    {
+      "key": "lastChallanNo",
+      "value": 0
+    },
+    {
+      "key": "defaultGSTRate",
+      "value": 18
+    },
+    {
+      "key": "theme",
+      "value": "light"
+    },
+    {
+      "key": "language",
+      "value": "en"
+    },
+    {
+      "key": "currency",
+      "value": "INR"
+    },
+    {
+      "key": "printFormat",
+      "value": "a4"
+    },
+    {
+      "key": "enableInventory",
+      "value": true
+    },
+    {
+      "key": "lowStockAlert",
+      "value": 10
+    }
+  ]
+}

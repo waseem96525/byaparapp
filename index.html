@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4A90E2">
+    <meta name="description" content="Complete Business Billing & Accounting Software">
+    
+    <title>BizBiller - Business Accounting</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css?v=20260120-1">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- App content will be rendered here -->
+        <div class="loading-screen">
+            <div class="spinner"></div>
+            <p>Loading BizBiller...</p>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="js/db.js?v=20260120-1"></script>
+    <script src="js/auth.js?v=20260120-1"></script>
+    <script src="js/utils.js?v=20260120-1"></script>
+    <script src="js/router.js?v=20260120-1"></script>
+    <script src="js/components.js?v=20260120-1"></script>
+    <script src="js/parties.js?v=20260120-1"></script>
+    <script src="js/items.js?v=20260120-1"></script>
+    <script src="js/billing.js?v=20260120-1"></script>
+    <script src="js/reports.js?v=20260120-1"></script>
+    <script src="js/accounting.js?v=20260120-1"></script>
+    <script src="js/settings.js?v=20260120-1"></script>
+    <script src="js/print.js?v=20260120-1"></script>
+    <script src="js/app.js?v=20260120-1"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => {
+                    console.log('Service Worker registered');
+                    reg.update();
+                })
+                .catch(err => console.log('Service Worker registration failed'));
+        }
+    </script>
+</body>
+</html>
