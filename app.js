@@ -5,49 +5,80 @@
 (async function() {
   'use strict';
 
-  console.log('App starting...');
+  function renderFatal(message) {
+    const app = document.getElementById('app');
+    if (!app) return;
+    app.innerHTML = `
+      <div class="container" style="padding: 24px;">
+        <div class="card">
+          <div class="card-body">
+            <h3 style="color: var(--danger-color); margin-top: 0;">App failed to start</h3>
+            <p style="color: var(--text-secondary); white-space: pre-wrap;">${String(message || 'Unknown error')}</p>
+            <div style="display:flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="window.location.reload()">Reload</button>
+              <button class="btn btn-outline" onclick="Auth?.logout?.(); window.location.reload();">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
-  // Initialize database
-  await db.init();
-  console.log('Database initialized');
+  function withTimeout(promise, ms, label) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms))
+    ]);
+  }
 
-  // Check if business is set up
-  const hasSetup = await Auth.hasBusinessSetup();
-  console.log('Has business setup:', hasSetup);
+  try {
+    console.log('App starting...');
 
-  if (!hasSetup) {
-    // First time setup
-    Router.init();
-    Router.renderSetup();
-  } else {
-    // Check authentication
-    const isAuthenticated = await Auth.init();
-    console.log('Is authenticated:', isAuthenticated);
+    // Initialize database (IndexedDB can hang if blocked)
+    await withTimeout(db.init(), 8000, 'Database init');
+    console.log('Database initialized');
 
-    if (!isAuthenticated) {
-      // Show login
+    // Check if business is set up
+    const hasSetup = await withTimeout(Auth.hasBusinessSetup(), 6000, 'Business setup check');
+    console.log('Has business setup:', hasSetup);
+
+    if (!hasSetup) {
+      // First time setup
       Router.init();
-      Router.renderLogin();
+      Router.renderSetup();
     } else {
-      console.log('Loading app...');
-      // Load app
-      Router.init();
-      
-      // Override Router render methods with full implementations BEFORE navigation
-      setupRouterOverrides();
-      console.log('Router overrides set up');
-      
-      Router.renderAppShell();
-      console.log('App shell rendered');
-      
-      // Apply saved theme
-      const theme = await Auth.getSetting('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-      
-      // Navigate to dashboard
-      console.log('Navigating to dashboard...');
-      Router.navigate('dashboard');
+      // Check authentication
+      const isAuthenticated = await withTimeout(Auth.init(), 6000, 'Auth init');
+      console.log('Is authenticated:', isAuthenticated);
+
+      if (!isAuthenticated) {
+        // Show login
+        Router.init();
+        Router.renderLogin();
+      } else {
+        console.log('Loading app...');
+        // Load app
+        Router.init();
+
+        // Override Router render methods with full implementations BEFORE navigation
+        setupRouterOverrides();
+        console.log('Router overrides set up');
+
+        Router.renderAppShell();
+        console.log('App shell rendered');
+
+        // Apply saved theme
+        const theme = await Auth.getSetting('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+
+        // Navigate to dashboard
+        console.log('Navigating to dashboard...');
+        Router.navigate('dashboard');
+      }
     }
+  } catch (error) {
+    console.error('Startup error:', error);
+    renderFatal(error?.stack || error?.message || error);
   }
 
   // Setup Router overrides function
